@@ -447,6 +447,11 @@ static int nfs4_write(struct nfs_argop4 *op, compound_data_t *data,
 	write_data.res_WRITE4 = res_WRITE4;
 	write_data.owner = owner;
 
+	/** [NEDGE FSAL SPECIAL]
+	 *  Pass the buffer ownership to FSAL. FSAL will free it when done.
+	 */
+	arg_WRITE4->data.data_val = NULL;
+
 	/* Do the actual write */
 	obj->obj_ops->write2(obj, false, nfs4_write_cb, write_arg, &write_data);
 
